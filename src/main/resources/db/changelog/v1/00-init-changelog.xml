@@ -1,0 +1,156 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="alexfomin (generated)" id="1731170536898-1">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="users" schemaName="public"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="users">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="users_pkey"/>
+            </column>
+            <column name="name" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+            <column name="age" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="0.0" name="rating" type="numeric"/>
+            <column name="payment" type="numeric"/>
+            <column name="active" type="BOOLEAN"/>
+            <column name="country" type="VARCHAR"/>
+            <column name="currency" type="VARCHAR(3)"/>
+            <column name="bio" type="VARCHAR(40)"/>
+            <column name="avatar_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="alexfomin (generated)" id="1731170536898-2">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="clothes" schemaName="public"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="clothes">
+            <column autoIncrement="true" name="id" startWith="41" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="clothes_pk"/>
+            </column>
+            <column name="article" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+            <column name="size" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quantity" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="alexfomin (generated)" id="1731170536898-3">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="orders" schemaName="public"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="orders">
+            <column autoIncrement="true" name="id" startWith="12" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="orders_pk"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="alexfomin (generated)" id="1731170536898-4">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="avatars" schemaName="public"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="avatars">
+            <column autoIncrement="true" name="id" startWith="6" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="avatars_pk"/>
+            </column>
+            <column name="url" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="alexfomin (generated)" id="1731170536898-5">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <indexExists indexName="avatars_unique" schemaName="public"/>
+            </not>
+        </preConditions>
+
+        <addUniqueConstraint columnNames="url" constraintName="avatars_unique" tableName="avatars"/>
+    </changeSet>
+
+    <changeSet author="alexfomin (generated)" id="1731170536898-6">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="orders_clothes" schemaName="public"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="orders_clothes">
+            <column name="order_id" type="BIGINT"/>
+            <column name="clothes_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="alexfomin (generated)" id="1731170536898-7">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="orders_clothes_clothes_fk"/>
+            </not>
+        </preConditions>
+
+        <addForeignKeyConstraint baseColumnNames="clothes_id" baseTableName="orders_clothes" constraintName="orders_clothes_clothes_fk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="clothes" validate="true"/>
+    </changeSet>
+
+    <changeSet author="alexfomin (generated)" id="1731170536898-8">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="orders_clothes_orders_fk"/>
+            </not>
+        </preConditions>
+
+        <addForeignKeyConstraint baseColumnNames="order_id" baseTableName="orders_clothes" constraintName="orders_clothes_orders_fk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="orders" validate="true"/>
+    </changeSet>
+    <changeSet author="alexfomin (generated)" id="1731170536898-9">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="orders_users_fk"/>
+            </not>
+        </preConditions>
+
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="orders" constraintName="orders_users_fk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+
+    <changeSet author="alexfomin (generated)" id="1731170536898-10">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="users_avatars_fk"/>
+            </not>
+        </preConditions>
+
+        <addForeignKeyConstraint baseColumnNames="avatar_id" baseTableName="users" constraintName="users_avatars_fk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="avatars" validate="true"/>
+    </changeSet>
+</databaseChangeLog>

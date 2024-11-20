@@ -1,0 +1,138 @@
+= Spring Boot context
+
+В Spring Boot контекст приложения (ApplicationContext) — это центральная часть инфраструктуры, которая управляет созданием и жизненным циклом объектов (бинов) в приложении.
+Контекст отвечает за конфигурирование, создание и связывание всех компонентов приложения.
+Процесс формирования контекста включает несколько этапов, которые происходят во время запуска Spring Boot приложения.
+
+Основные шаги формирования контекста Spring Boot:
+
+=== 1. Запуск Spring Boot приложения
+
+При запуске приложения метод main() вызывает статический метод SpringApplication.run().
+
+[source, java]
+----
+import org.springframework.boot.SpringApplication;
+
+@SpringBootApplication
+public class MyApplication {
+    public static void main(String[] args){
+      SpringApplication.run(MyApplication.class, args);
+    }
+}
+----
+
+Аннотация @SpringBootApplication — это сокращение для комбинации следующих аннотаций:
+
+    ** @SpringBootConfiguration -> @Configuration: Определяет класс как источник конфигурации.
+    ** @EnableAutoConfiguration: Включает автоконфигурацию, которая настраивает компоненты Spring на основе добавленных в проект зависимостей.
+    ** @ComponentScan: Указывает на сканирование пакетов для поиска и регистрации компонентов (bean).
+
+=== 2. Инициализация SpringApplication
+
+При вызове SpringApplication.run() происходит инициализация объекта SpringApplication.
+Этот класс выполняет множество действий для подготовки контекста, таких как:
+
+** Определение класса с аннотацией @SpringBootApplication.
+** Настройка системных и environment параметров.
+** Инициализация слушателей событий (listeners).
+
+=== 3. Создание и настройка ApplicationContext
+После инициализации запускается создание контекста приложения, который обычно является реализацией интерфейса ApplicationContext
+
+Контекст Spring Boot выполняет следующие функции:
+
+** Управляет жизненным циклом объектов (бинов) в приложении.
+** Выполняет внедрение зависимостей (Dependency Injection) между компонентами.
+** Обрабатывает события в приложении.
+** Выполняет сканирование классов для регистрации бинов и автоматического конфигурирования.
+
+=== 4. Чтение конфигурации и автонастройка (Auto-Configuration)
+Аннотация @EnableAutoConfiguration запускает механизм автоматической конфигурации, который анализирует зависимости, включенные в проект (например, наличие библиотек для работы с базой данных, веб-сервера, безопасности), и настраивает соответствующие бины. Например:
+
+** Если в проект добавлен spring-boot-starter-web, Spring Boot автоматически настраивает встроенный сервер (например, Tomcat) и компоненты для обработки HTTP-запросов.
+** Если добавлена зависимость для работы с базой данных (например, H2 или MySQL), Spring Boot автоматически настраивает подключение и создает необходимые компоненты для работы с базой.
+
+Эта настройка выполняется с использованием специальных классов, помеченных аннотацией @Configuration и предоставленных Spring Boot. Например, DataSourceAutoConfiguration для настройки источника данных или WebMvcAutoConfiguration для настройки веб-части приложения.
+
+=== 5. Сканирование компонентов (Component Scanning)
+Аннотация @ComponentScan автоматически ищет классы в указанных пакетах, помеченные специальными аннотациями, такими как:
+
+** @Component: Для регистрации вспомогательных бинов.
+** @Service: Для регистрации сервисных классов.
+** @Repository: Для работы с базами данных.
+** @Controller: Для MVC-контроллеров.
+** @RestController: Для RESTful-контроллеров.
+
+=== 6. Создание и регистрация бинов
+После сканирования Spring Boot создает экземпляры всех найденных бинов и регистрирует их в контексте. Бины могут быть описаны как аннотированные классы (@Component, @Service, @Repository и т.д.) или как методы, помеченные аннотацией @Bean в конфигурационных классах.
+Вы еще можете встретить xml конфигурации, но это касается довольно старых и сейчас уже довольно редко встречается. XML конфигурации мы рассматривать не будем.
+
+Пример создания бина через аннотацию @Bean:
+
+[source,java]
+----
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class AppConfig{
+    @Bean
+    public MyService myService(){
+       return new MyServiceImpl();
+    }
+}
+----
+
+Пример создания бина с аннотацией @Component:
+
+[source, java]
+----
+import org.springframework.stereotype.Component;
+
+@Component
+public class MyComponent{
+    // Логика компонента
+}
+----
+
+=== 7. Внедрение зависимостей (Dependency Injection)
+
+После создания всех бинов Spring Boot связывает зависимости между ними. Это осуществляется через механизмы:
+
+** Конструкторная инъекция (рекомендуется):
+
+[source, java]
+----
+import org.springframework.stereotype.Service;
+
+@Service
+public class MyService {
+    private final MyRepository repository;
+
+    public MyService(MyRepository repository) {
+        this. repository = repository;
+    }
+}
+----
+
+** Инъекция через поля (либо через сеттеры):
+
+[source,java]
+----
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class MyService{
+    @Autowired
+    private MyRepository myRepository;
+
+   /*   Injection через setter
+    @Autowired
+    public void setMyRepository(MyRepository myRepository){
+        this.myRepository = myRepository;
+    }
+    */
+}
+----

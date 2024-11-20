@@ -1,0 +1,41 @@
+= Liquibase
+
+Liquibase — это инструмент с открытым исходным кодом, который используется для управления версиями базы данных и автоматизации изменений в ней.
+
+=== Основные функции Liquibase:
+
+* Версионирование базы данных: позволяет контролировать все изменения в структуре базы данных, отслеживать их историю и легко откатываться к предыдущим версиям при необходимости.
+* Создание миграций: с помощью Liquibase можно создавать сценарии миграции (ChangeSets) для внесения изменений в таблицы, индексы и другие элементы базы данных.
+* Управление состоянием базы данных: Liquibase использует специальную таблицу для отслеживания всех изменений, которая позволяет видеть актуальное состояние базы данных.
+* Поддержка различных баз данных: Liquibase совместим с разными СУБД (MySQL, PostgreSQL, Oracle, SQL Server и т.д.), что делает его удобным в многоплатформенных средах.
+* Поддержка различных форматов описания изменений: изменения можно описывать с помощью SQL, XML, YAML или JSON, что позволяет выбрать наиболее удобный формат.
+
+
+== Как сгенерировать changelog на существующей базе данных
+1. Добавляем зависимость liquibase в секцию dependencies
+
+[source, xml]
+----
+<dependency>
+    <groupId>org.liquibase</groupId>
+    <artifactId>liquibase-core</artifactId>
+</dependency>
+----
+
+2. Добавляем в секцию plugins новый plugin
+
+[source, xml]
+----
+<plugin>
+    <groupId>org.liquibase</groupId>
+    <artifactId>liquibase-maven-plugin</artifactId>
+    <configuration>
+        <changeLogFile>src/main/resources/db/changelog/changelog-master.xml</changeLogFile>
+        <outputChangeLogFile>src/main/resources/db/changelog/full-database-changelog.xml</outputChangeLogFile>
+        <url>jdbc:postgresql://localhost:5432/delete_me</url>
+        <username>postgres</username>
+        <password>docker</password>
+        <driver>org.postgresql.Driver</driver>
+    </configuration>
+</plugin>
+----

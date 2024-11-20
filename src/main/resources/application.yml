@@ -1,0 +1,24 @@
+server.port: 8081
+
+spring:
+  application:
+    name: pingwit-spring-boot-video
+  datasource:
+    url: jdbc:postgresql://localhost:5432/pingwit_maven_video
+    username: postgres
+    password: docker
+  liquibase.change-log: classpath:db/changelog/changelog-master.xml
+  .jpa:
+    show-sql: true
+    open-in-view: false
+
+api:
+  jokes:
+    url: https://official-joke-api.appspot.com/random_joke
+    servers:
+      - name: "Official joke api"
+        url: https://official-joke-api.appspot.com/random_joke
+      - name: "Chuck Norris jokes"
+        url: https://api.chucknorris.io/jokes/random
+      - name: "Programming joke api"
+        url: https://jokeapi.dev/joke/Programming

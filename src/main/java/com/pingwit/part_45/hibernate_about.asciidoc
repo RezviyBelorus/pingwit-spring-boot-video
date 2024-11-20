@@ -1,0 +1,71 @@
+= Hibernate
+
+Hibernate — это фреймворк для работы с базами данных в Java, который реализует ORM (Object-Relational Mapping), что позволяет преобразовывать объекты Java-классов в записи в реляционной базе данных и наоборот.
+
+Основная цель Hibernate — упростить взаимодействие с базами данных, скрывая от разработчиков сложные SQL-запросы и предоставляя более удобный объектно-ориентированный интерфейс для работы с данными.
+
+=== Основные понятия и особенности Hibernate:
+
+* ORM (Object-Relational Mapping):
+    ** ORM связывает объекты Java с таблицами базы данных. Например, каждый объект Java-класса может представлять строку в таблице базы данных, а его свойства — соответствующие столбцы этой таблицы.
+
+* Автоматическое управление запросами:
+    ** Hibernate автоматически генерирует SQL-запросы для создания, чтения, обновления и удаления данных (CRUD-операции). Это значительно сокращает объем написания SQL вручную.
+
+* Пример конфигурации entity:
+
+    - Hibernate поддерживает конфигурации через аннотации или XML, что позволяет гибко настраивать маппинг классов и таблиц. Аннотации упрощают код, например:
+[source, java]
+----
+@Entity
+@Table(name = "users")
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "username")
+    private String username;
+
+    @Column(name = "password")
+    private String password;
+}
+
+----
+
+* Кэширование:
+    ** Hibernate поддерживает кэширование данных, что уменьшает количество запросов к базе данных и ускоряет выполнение операций.
+
+* HQL (Hibernate Query Language):
+    ** Hibernate предлагает собственный язык запросов HQL, который похож на SQL, но работает с объектами Java вместо таблиц и колонок. Например:
+[source, java]
+----
+String hql = "FROM User WHERE username = :username";
+Query query = session.createQuery(hql);
+query.setParameter("username", "john");
+List<User> users = query.list();
+----
+
+* Транзакции и управление соединениями:
+    ** Hibernate помогает управлять транзакциями, открывать и закрывать соединения с базой данных, а также управлять состоянием объектов (например, создание, обновление, удаление).
+
+* Обработка связей между объектами:
+    ** Hibernate поддерживает связи между объектами, такие как one-to-one, one-to-many, many-to-many, и управляет этими отношениями на уровне базы данных.
+
+
+=== Преимущества Hibernate:
+* Упрощает работу с базами данных благодаря автоматической генерации SQL-запросов.
+* Управляет объектно-реляционными связями.
+* Поддерживает кэширование для повышения производительности.
+* Независим от конкретных СУБД (баз данных).
+
+=== Недостатки Hibernate:
+* Может быть избыточен для простых проектов.
+* Потребляет дополнительные ресурсы на изучение и настройку.
+
+Hibernate часто используется совместно с другими технологиями, такими как Spring, для создания мощных корпоративных приложений.
+
+
+=== Книга для самостоятельного изучения
+Amazon:
+https://www.amazon.pl/Java-Persistence-Spring-Data-Hibernate/dp/1617299189/ref=sr_1_2?dib=eyJ2IjoiMSJ9.9K2_80PM8Fy0XTcCWzLgy46Lx1HAb4X0OKvaWi8zqXU1Lv-YHNvckcmMNgXp5KDbiNMWUaej0pqh8OQLawNPE_Hzbt8DHqtTdPOAZzmeszpNZ8-G7zUZF3ldaZnJjzrRhXoLGvaY-iKXDqw68C5fANCL5t25pc5wY3mTvFzn7gYOhJh2giXVqQs1HSwK2X3LNROAOHn7shwicx3Xsp-xOkRpIwafpR-NEoVjeOmmzwEgUY9FfD8FzTQ_--F0AXmtQOg4_8ALBthC50d7hn-A0RgGFeg0YcN51j6bg1nzBic.4hchwo8ZnTU-eRpWcG0Q1hAZKBjp_2WK0HwmFG_l5gQ&dib_tag=se&keywords=Java+Persistence+with+Hibernate&linkCode=gg3&qid=1726504642&sr=8-2[Java Persistence with Spring Data and Hibernate 2023]
