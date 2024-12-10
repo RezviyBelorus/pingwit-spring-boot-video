@@ -1,0 +1,10 @@
+== Отличия от @ControllerAdvice
+
+[cols="2,1", options="header"]
+|===
+| @ControllerAdvice | @RestControllerAdvice
+
+| Используется для обработки исключений в контроллерах MVC (шаблоны, HTML). | Используется для REST-контроллеров (@RestController).
+| Возвращает объекты типа ModelAndView, ResponseEntity, или другие. | Автоматически сериализует объект ответа в JSON или XML.
+| Подходит для традиционных веб-приложений. | Предназначена для API, работающих с JSON/XML.
+|===

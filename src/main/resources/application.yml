@@ -22,3 +22,8 @@ api:
         url: https://api.chucknorris.io/jokes/random
       - name: "Programming joke api"
         url: https://jokeapi.dev/joke/Programming
+
+  car-sharing:
+    contacts:
+      phone: +48-777-777-77
+      email: pomogisebesam@gmail.com

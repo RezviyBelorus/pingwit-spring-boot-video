@@ -1,0 +1,22 @@
+= Отличия @Valid и @Validated
+
+[cols="1,1,1", options="header"]
+|===
+| Характеристика | @Valid | @Validated
+
+| Пакет
+| jakarta.validation.Valid или javax.validation.Valid
+| org.springframework.validation.annotation.Validated
+
+| Область применения
+| Используется для валидации #DTO#.
+| Предназначена для работы с #Spring Bean Validation#.
+
+| Поддержка групп валидации
+| #Не# поддерживает группы валидации.
+| Поддерживает группы валидации через атрибут #value#.
+
+| Основной механизм
+| Работает через JSR-380 (Bean Validation).
+| Интеграция Spring Validation с поддержкой групп и других функций.
+|===
